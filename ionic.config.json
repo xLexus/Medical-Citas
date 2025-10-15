@@ -1,0 +1,7 @@
+{
+  "name": "appPonluisa",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
