@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="isEditMode ? '/patient/detail/' + patientId : '/patient/list'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isEditMode ? 'Editar Paciente' : 'Nuevo Paciente' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="form-container">
+    <div class="form-header">
+      <ion-icon [name]="isEditMode ? 'create' : 'person-add'" size="large" color="primary">
+      </ion-icon>
+      <h2>{{ isEditMode ? 'Actualizar Información' : 'Registrar Nuevo Paciente' }}</h2>
+    </div>
+
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+      <!-- Nombre Completo -->
+      <ion-item>
+        <ion-label position="floating">Nombre Completo *</ion-label>
+        <ion-input type="text" formControlName="nombreCompleto" placeholder="Ej: Juan Pérez García">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="submitted && f['nombreCompleto'].errors" class="error-message">
+        <span *ngIf="f['nombreCompleto'].errors['required']">El nombre es requerido</span>
+        <span *ngIf="f['nombreCompleto'].errors['minlength']">Mínimo 3 caracteres</span>
+      </div>
+
+      <!-- Edad -->
+      <ion-item>
+        <ion-label position="floating">Edad *</ion-label>
+        <ion-input type="number" formControlName="edad" placeholder="Ej: 35">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="submitted && f['edad'].errors" class="error-message">
+        <span *ngIf="f['edad'].errors['required']">La edad es requerida</span>
+        <span *ngIf="f['edad'].errors['min'] || f['edad'].errors['max']">Edad inválida (0-120)</span>
+      </div>
+
+      <!-- Género -->
+      <ion-item>
+        <ion-label position="floating">Género *</ion-label>
+        <ion-select formControlName="genero" placeholder="Seleccione">
+          <ion-select-option *ngFor="let genero of generos" [value]="genero">
+            {{ genero }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="submitted && f['genero'].errors" class="error-message">
+        <span *ngIf="f['genero'].errors['required']">El género es requerido</span>
+      </div>
+
+      <!-- Tipo de Sangre -->
+      <ion-item>
+        <ion-label position="floating">Tipo de Sangre *</ion-label>
+        <ion-select formControlName="tipoSangre" placeholder="Seleccione">
+          <ion-select-option *ngFor="let tipo of tiposSangre" [value]="tipo">
+            {{ tipo }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="submitted && f['tipoSangre'].errors" class="error-message">
+        <span *ngIf="f['tipoSangre'].errors['required']">El tipo de sangre es requerido</span>
+      </div>
+
+      <!-- Teléfono -->
+      <ion-item>
+        <ion-label position="floating">Teléfono</ion-label>
+        <ion-input type="tel" formControlName="telefono" placeholder="Ej: 0987654321">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="submitted && f['telefono'].errors" class="error-message">
+        <span *ngIf="f['telefono'].errors['pattern']">Debe tener 10 dígitos</span>
+      </div>
+
+      <!-- Dirección -->
+      <ion-item>
+        <ion-label position="floating">Dirección</ion-label>
+        <ion-textarea formControlName="direccion" rows="2" placeholder="Ej: Av. Principal 123, Ambato">
+        </ion-textarea>
+      </ion-item>
+
+      <!-- Historial Básico -->
+      <ion-item>
+        <ion-label position="floating">Historial Básico</ion-label>
+        <ion-textarea formControlName="historialBasico" rows="3"
+          placeholder="Ej: Hipertensión controlada, alergias conocidas...">
+        </ion-textarea>
+      </ion-item>
+
+      <!-- Botones -->
+      <div class="form-buttons">
+        <ion-button expand="block" type="submit" color="primary">
+          <ion-icon slot="start" name="checkmark-circle"></ion-icon>
+          {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+        </ion-button>
+
+        <ion-button expand="block" fill="outline" color="medium" (click)="cancel()">
+          <ion-icon slot="start" name="close-circle"></ion-icon>
+          Cancelar
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

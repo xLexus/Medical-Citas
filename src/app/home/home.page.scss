@@ -1,27 +1,130 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.home-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.welcome-section {
+  margin-bottom: 20px;
+
+  .welcome-card {
+    background: linear-gradient(135deg, var(--ion-color-primary) 0%, var(--ion-color-primary-shade) 100%);
+    color: white;
+    margin: 0;
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      ion-icon {
+        font-size: 80px;
+      }
+
+      h1 {
+        font-size: 16px;
+        margin: 0 0 5px;
+        opacity: 0.9;
+      }
+
+      h2 {
+        font-size: 24px;
+        margin: 0 0 10px;
+        font-weight: bold;
+      }
+
+      ion-chip {
+        --background: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+    }
+  }
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
 
-  color: #8c8c8c;
+  .stat-card {
+    margin: 0;
+    text-align: center;
 
-  margin: 0;
+    ion-card-content {
+      ion-icon {
+        font-size: 48px;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        font-size: 32px;
+        font-weight: bold;
+        margin: 10px 0 5px;
+        color: var(--ion-color-dark);
+      }
+
+      p {
+        margin: 0;
+        color: var(--ion-color-medium);
+        font-size: 14px;
+      }
+    }
+  }
 }
 
-#container a {
-  text-decoration: none;
+.quick-actions {
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 15px;
+    color: var(--ion-color-dark);
+    padding: 0 5px;
+  }
+
+  ion-card {
+    margin: 0 0 10px;
+
+    ion-item {
+      --padding-start: 15px;
+
+      ion-icon[slot="start"] {
+        font-size: 28px;
+        margin-right: 15px;
+      }
+
+      ion-label {
+        h3 {
+          font-size: 16px;
+          font-weight: 600;
+          margin-bottom: 5px;
+        }
+
+        p {
+          font-size: 13px;
+          color: var(--ion-color-medium);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .home-container {
+    padding: 15px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .welcome-section .welcome-card .user-info {
+    ion-icon {
+      font-size: 60px;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+  }
 }

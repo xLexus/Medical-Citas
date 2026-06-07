@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Iniciar Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <div class="logo-container">
+      <ion-icon name="medical" size="large" color="primary"></ion-icon>
+      <h1>appPonluisa</h1>
+      <p>Sistema de Historias Clínicas</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <ion-item>
+        <ion-label position="floating">Correo Electrónico</ion-label>
+        <ion-input type="email" formControlName="email" placeholder="ejemplo@correo.com">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="submitted && f['email'].errors" class="error-message">
+        <span *ngIf="f['email'].errors['required']">El correo es requerido</span>
+        <span *ngIf="f['email'].errors['email']">Ingrese un correo válido</span>
+      </div>
+
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type="password" formControlName="password" placeholder="Mínimo 6 caracteres">
+        </ion-input>
+      </ion-item>
+      <div *ngIf="submitted && f['password'].errors" class="error-message">
+        <span *ngIf="f['password'].errors['required']">La contraseña es requerida</span>
+        <span *ngIf="f['password'].errors['minlength']">Mínimo 6 caracteres</span>
+      </div>
+
+      <ion-button expand="block" type="submit" class="ion-margin-top">
+        Iniciar Sesión
+      </ion-button>
+    </form>
+
+    <div class="register-link">
+      <p>¿No tienes cuenta?</p>
+      <ion-button fill="clear" (click)="goToRegister()">
+        Registrarse aquí
+      </ion-button>
+    </div>
+
+    <div class="credentials-info">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Credenciales de prueba:</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Admin:</strong> admin@ponluisa.com / admin123</p>
+          <p><strong>Médico:</strong> medico@ponluisa.com / medico123</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="patient ? '/patient/detail/' + patient.id : '/patient/list'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Historial Médico</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addHistory()">
+        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar *ngIf="patient">
+    <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="searchHistories($event)" placeholder="Buscar en historial..."
+      animated>
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="patient" class="patient-info">
+    <ion-card (click)="viewPatientDetail()" button>
+      <ion-card-content>
+        <div class="patient-summary">
+          <div class="patient-avatar">
+            <ion-icon name="person-circle" size="large" color="primary"></ion-icon>
+          </div>
+          <div class="patient-details">
+            <h2>{{ patient.nombreCompleto }}</h2>
+            <p>
+              {{ patient.edad }} años | {{ patient.genero }} | {{ patient.tipoSangre }}
+            </p>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div class="history-stats ion-padding">
+    <ion-chip color="primary">
+      <ion-icon name="document-text"></ion-icon>
+      <ion-label>{{ filteredHistories.length }} Consulta(s)</ion-label>
+    </ion-chip>
+  </div>
+
+  <ion-list *ngIf="filteredHistories.length > 0">
+    <ion-card *ngFor="let history of filteredHistories" class="history-card">
+      <ion-card-header>
+        <div class="history-header">
+          <div class="date-info">
+            <ion-icon name="calendar" color="primary"></ion-icon>
+            <ion-card-subtitle>{{ formatDate(history.fechaConsulta) }}</ion-card-subtitle>
+          </div>
+          <ion-button fill="clear" color="danger" size="small" (click)="confirmDelete(history, $event)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="history-section">
+          <h3>
+            <ion-icon name="medical" color="danger"></ion-icon>
+            Diagnóstico
+          </h3>
+          <p>{{ history.diagnostico }}</p>
+        </div>
+
+        <div class="history-section">
+          <h3>
+            <ion-icon name="fitness" color="success"></ion-icon>
+            Tratamiento
+          </h3>
+          <p>{{ history.tratamiento }}</p>
+        </div>
+
+        <div class="history-section">
+          <h3>
+            <ion-icon name="clipboard" color="warning"></ion-icon>
+            Observaciones
+          </h3>
+          <p>{{ history.observaciones }}</p>
+        </div>
+
+        <div class="medico-info" *ngIf="history.nombreMedico">
+          <ion-chip color="tertiary">
+            <ion-icon name="person"></ion-icon>
+            <ion-label>{{ history.nombreMedico }}</ion-label>
+          </ion-chip>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <div *ngIf="filteredHistories.length === 0" class="empty-state">
+    <ion-icon name="document-text-outline" size="large" color="medium"></ion-icon>
+    <h2>No hay historias clínicas</h2>
+    <p>{{ searchTerm ? 'No se encontraron resultados' : 'Comienza agregando una nueva consulta' }}</p>
+    <ion-button (click)="addHistory()" *ngIf="!searchTerm">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Nueva Consulta
+    </ion-button>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addHistory()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Historias Clínicas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addHistory()">
+        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="searchHistories($event)"
+      placeholder="Buscar por paciente, diagnóstico..." animated>
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="stats ion-padding">
+    <ion-chip color="primary">
+      <ion-icon name="document-text"></ion-icon>
+      <ion-label>Total: {{ filteredHistories.length }}</ion-label>
+    </ion-chip>
+  </div>
+
+  <ion-list *ngIf="filteredHistories.length > 0">
+    <ion-card *ngFor="let history of filteredHistories" button (click)="viewPatientHistory(history)">
+      <ion-card-header>
+        <div class="card-header">
+          <div class="patient-info">
+            <ion-icon name="person-circle" color="primary" size="large"></ion-icon>
+            <div>
+              <ion-card-title>{{ getPatientName(history.pacienteId) }}</ion-card-title>
+              <ion-card-subtitle>
+                <ion-icon name="calendar" size="small"></ion-icon>
+                {{ formatDate(history.fechaConsulta) }}
+              </ion-card-subtitle>
+            </div>
+          </div>
+          <ion-icon name="chevron-forward" color="medium"></ion-icon>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="content-section">
+          <p class="label">
+            <ion-icon name="medical" color="danger" size="small"></ion-icon>
+            Diagnóstico:
+          </p>
+          <p class="text">{{ history.diagnostico }}</p>
+        </div>
+
+        <div class="content-section">
+          <p class="label">
+            <ion-icon name="fitness" color="success" size="small"></ion-icon>
+            Tratamiento:
+          </p>
+          <p class="text">{{ history.tratamiento }}</p>
+        </div>
+
+        <div class="medico-chip" *ngIf="history.nombreMedico">
+          <ion-chip color="tertiary" outline>
+            <ion-icon name="person"></ion-icon>
+            <ion-label>{{ history.nombreMedico }}</ion-label>
+          </ion-chip>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+
+  <div *ngIf="filteredHistories.length === 0" class="empty-state">
+    <ion-icon name="document-text-outline" size="large" color="medium"></ion-icon>
+    <h2>No hay historias clínicas</h2>
+    <p>{{ searchTerm ? 'No se encontraron resultados' : 'Comienza registrando una nueva historia clínica' }}</p>
+    <ion-button (click)="addHistory()" *ngIf="!searchTerm">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Nueva Historia Clínica
+    </ion-button>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addHistory()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

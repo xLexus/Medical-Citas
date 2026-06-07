@@ -1,0 +1,40 @@
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 30px;
+
+    ion-icon {
+      font-size: 64px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 10px 0;
+      color: var(--ion-color-primary);
+      font-size: 20px;
+    }
+  }
+
+  ion-item {
+    margin-bottom: 15px;
+  }
+
+  .error-message {
+    color: var(--ion-color-danger);
+    font-size: 12px;
+    padding: 5px 15px;
+    margin-bottom: 10px;
+  }
+
+  .form-buttons {
+    margin-top: 30px;
+
+    ion-button {
+      margin-bottom: 10px;
+    }
+  }
+}

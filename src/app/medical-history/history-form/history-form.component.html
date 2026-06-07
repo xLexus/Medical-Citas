@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button
+        [defaultHref]="selectedPatientId ? '/patient/detail/' + selectedPatientId : '/patient/list'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nueva Historia Clínica</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="form-container">
+    <div class="form-header">
+      <ion-icon name="document-text" size="large" color="primary"></ion-icon>
+      <h2>Registrar Consulta Médica</h2>
+    </div>
+
+    <form [formGroup]="historyForm" (ngSubmit)="onSubmit()">
+      <!-- Seleccionar Paciente -->
+      <ion-item>
+        <ion-label position="floating">Paciente *</ion-label>
+        <ion-select formControlName="pacienteId" placeholder="Seleccione un paciente"
+          [disabled]="selectedPatientId !== null">
+          <ion-select-option *ngFor="let patient of patients" [value]="patient.id">
+            {{ patient.nombreCompleto }} - {{ patient.edad }} años
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="submitted && f['pacienteId'].errors" class="error-message">
+        <span *ngIf="f['pacienteId'].errors['required']">Debe seleccionar un paciente</span>
+      </div>
+
+      <!-- Fecha de Consulta -->
+      <ion-item>
+        <ion-label position="floating">Fecha de Consulta *</ion-label>
+        <ion-datetime-button datetime="fechaConsulta"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="fechaConsulta" presentation="date" formControlName="fechaConsulta" [max]="maxDate"
+              locale="es-ES">
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+      <div *ngIf="submitted && f['fechaConsulta'].errors" class="error-message">
+        <span *ngIf="f['fechaConsulta'].errors['required']">La fecha es requerida</span>
+      </div>
+
+      <!-- Diagnóstico -->
+      <ion-item>
+        <ion-label position="floating">Diagnóstico *</ion-label>
+        <ion-textarea formControlName="diagnostico" rows="3" placeholder="Describa el diagnóstico detallado..."
+          counter="true" maxlength="500">
+        </ion-textarea>
+      </ion-item>
+      <div *ngIf="submitted && f['diagnostico'].errors" class="error-message">
+        <span *ngIf="f['diagnostico'].errors['required']">El diagnóstico es requerido</span>
+        <span *ngIf="f['diagnostico'].errors['minlength']">Mínimo 10 caracteres</span>
+      </div>
+
+      <!-- Tratamiento -->
+      <ion-item>
+        <ion-label position="floating">Tratamiento *</ion-label>
+        <ion-textarea formControlName="tratamiento" rows="4" placeholder="Describa el tratamiento prescrito..."
+          counter="true" maxlength="500">
+        </ion-textarea>
+      </ion-item>
+      <div *ngIf="submitted && f['tratamiento'].errors" class="error-message">
+        <span *ngIf="f['tratamiento'].errors['required']">El tratamiento es requerido</span>
+        <span *ngIf="f['tratamiento'].errors['minlength']">Mínimo 10 caracteres</span>
+      </div>
+
+      <!-- Observaciones -->
+      <ion-item>
+        <ion-label position="floating">Observaciones *</ion-label>
+        <ion-textarea formControlName="observaciones" rows="3"
+          placeholder="Observaciones adicionales, recomendaciones..." counter="true" maxlength="500">
+        </ion-textarea>
+      </ion-item>
+      <div *ngIf="submitted && f['observaciones'].errors" class="error-message">
+        <span *ngIf="f['observaciones'].errors['required']">Las observaciones son requeridas</span>
+      </div>
+
+      <!-- Botones -->
+      <div class="form-buttons">
+        <ion-button expand="block" type="submit" color="primary">
+          <ion-icon slot="start" name="checkmark-circle"></ion-icon>
+          Guardar Historia Clínica
+        </ion-button>
+
+        <ion-button expand="block" fill="outline" color="medium" (click)="cancel()">
+          <ion-icon slot="start" name="close-circle"></ion-icon>
+          Cancelar
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

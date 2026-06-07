@@ -1,3 +1,48 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-split-pane contentId="main-content" *ngIf="currentUser">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>
+        <ion-list id="inbox-list">
+          <ion-list-header>
+            <ion-icon name="medical" color="primary" size="large"></ion-icon>
+          </ion-list-header>
+          <ion-note>appPonluisa</ion-note>
+
+          <!-- User Info -->
+          <ion-item lines="full" class="user-info">
+            <ion-avatar slot="start">
+              <ion-icon name="person-circle" color="primary"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ currentUser?.nombre }}</h2>
+              <p>{{ currentUser?.rol }}</p>
+            </ion-label>
+          </ion-item>
+
+          <!-- Menu Items -->
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item *ngIf="shouldShowPage(p)" routerDirection="root" [routerLink]="[p.url]" lines="none"
+              detail="false" routerLinkActive="selected">
+              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+
+        <!-- Logout Button -->
+        <ion-list id="labels-list">
+          <ion-item lines="none" button (click)="logout()">
+            <ion-icon slot="start" name="log-out-outline"></ion-icon>
+            <ion-label>Cerrar Sesión</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+    <!-- Main Content -->
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+
+  <!-- Show content without menu when not logged in -->
+  <ion-router-outlet *ngIf="!currentUser"></ion-router-outlet>
 </ion-app>

@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Pacientes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addPatient()">
+        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar>
+    <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="searchPatients($event)" placeholder="Buscar paciente..."
+      animated>
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="loadPatients()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="patient-stats ion-padding">
+    <ion-chip color="primary">
+      <ion-icon name="people"></ion-icon>
+      <ion-label>Total: {{ filteredPatients.length }}</ion-label>
+    </ion-chip>
+  </div>
+
+  <ion-list *ngIf="filteredPatients.length > 0">
+    <ion-item *ngFor="let patient of filteredPatients" button (click)="viewPatient(patient)" detail>
+      <ion-avatar slot="start">
+        <ion-icon [name]="getGenderIcon(patient.genero)" size="large"
+          [color]="patient.genero === 'Masculino' ? 'primary' : patient.genero === 'Femenino' ? 'secondary' : 'tertiary'">
+        </ion-icon>
+      </ion-avatar>
+
+      <ion-label>
+        <h2>{{ patient.nombreCompleto }}</h2>
+        <p>
+          <ion-icon name="calendar" size="small"></ion-icon>
+          {{ patient.edad }} años |
+          <ion-icon name="water" size="small"></ion-icon>
+          {{ patient.tipoSangre }}
+        </p>
+        <p class="historial-preview" *ngIf="patient.historialBasico">
+          {{ patient.historialBasico }}
+        </p>
+      </ion-label>
+
+      <ion-button slot="end" fill="clear" (click)="presentActionSheet(patient, $event)">
+        <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="filteredPatients.length === 0" class="empty-state">
+    <ion-icon name="people-outline" size="large" color="medium"></ion-icon>
+    <h2>No hay pacientes registrados</h2>
+    <p>Comienza agregando un nuevo paciente</p>
+    <ion-button (click)="addPatient()">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Agregar Paciente
+    </ion-button>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addPatient()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/patient/list"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detalles del Paciente</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="editPatient()">
+        <ion-icon slot="icon-only" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="patient" class="patient-detail">
+    <!-- Header con Avatar -->
+    <div class="patient-header">
+      <div class="avatar-container">
+        <ion-icon [name]="getGenderIcon()" [color]="getGenderColor()" size="large">
+        </ion-icon>
+      </div>
+      <h1>{{ patient.nombreCompleto }}</h1>
+      <p class="patient-id">ID: {{ patient.id }}</p>
+    </div>
+
+    <!-- Información General -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Información General</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list lines="none">
+          <ion-item>
+            <ion-icon name="calendar" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <p>Edad</p>
+              <h3>{{ patient.edad }} años</h3>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon [name]="getGenderIcon()" slot="start" [color]="getGenderColor()"></ion-icon>
+            <ion-label>
+              <p>Género</p>
+              <h3>{{ patient.genero }}</h3>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="water" slot="start" color="danger"></ion-icon>
+            <ion-label>
+              <p>Tipo de Sangre</p>
+              <h3>{{ patient.tipoSangre }}</h3>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="patient.telefono">
+            <ion-icon name="call" slot="start" color="success"></ion-icon>
+            <ion-label>
+              <p>Teléfono</p>
+              <h3>{{ patient.telefono }}</h3>
+            </ion-label>
+          </ion-item>
+
+          <ion-item *ngIf="patient.direccion">
+            <ion-icon name="location" slot="start" color="warning"></ion-icon>
+            <ion-label>
+              <p>Dirección</p>
+              <h3>{{ patient.direccion }}</h3>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon name="clipboard" slot="start" color="tertiary"></ion-icon>
+            <ion-label>
+              <p>Fecha de Registro</p>
+              <h3>{{ formatDate(patient.fechaRegistro) }}</h3>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Historial Básico -->
+    <ion-card *ngIf="patient.historialBasico">
+      <ion-card-header>
+        <ion-card-title>Historial Básico</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ patient.historialBasico }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Historial Médico Reciente -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Historial Médico</ion-card-title>
+        <ion-button fill="clear" size="small" (click)="viewAllHistories()">
+          Ver Todo
+        </ion-button>
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngIf="medicalHistories.length === 0" class="no-history">
+          <ion-icon name="document-text-outline" color="medium"></ion-icon>
+          <p>No hay historias clínicas registradas</p>
+        </div>
+
+        <ion-list *ngIf="medicalHistories.length > 0">
+          <ion-item *ngFor="let history of medicalHistories.slice(0, 3)" lines="full">
+            <ion-label class="ion-text-wrap">
+              <h3>{{ formatDate(history.fechaConsulta) }}</h3>
+              <p><strong>Diagnóstico:</strong> {{ history.diagnostico }}</p>
+              <p *ngIf="history.nombreMedico">
+                <ion-icon name="person" size="small"></ion-icon>
+                {{ history.nombreMedico }}
+              </p>
+            </ion-label>
+            <ion-icon name="chevron-forward" slot="end" color="medium"></ion-icon>
+          </ion-item>
+        </ion-list>
+
+        <ion-button expand="block" (click)="addHistory()" class="ion-margin-top">
+          <ion-icon slot="start" name="add-circle"></ion-icon>
+          Nueva Consulta
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div *ngIf="!patient" class="not-found">
+    <ion-icon name="alert-circle-outline" size="large" color="warning"></ion-icon>
+    <h2>Paciente no encontrado</h2>
+    <ion-button routerLink="/patient/list">
+      Volver a la lista
+    </ion-button>
+  </div>
+</ion-content>
